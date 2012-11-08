@@ -12,6 +12,7 @@ package blazin.miha.simplejump {
 	/**
 	 * Main class of Simple Jump game
 	 */
+	[SWF(frameRate="30")]
 	public class SimpleJump extends Sprite {
 		private var startView : StartView;
 		private var gameView : GameView;
@@ -24,11 +25,25 @@ package blazin.miha.simplejump {
 		}
 
 		/**
-		 * Initializes game and shows first view
+		 * Initializes game
 		 */
 		private function init(event : Event = null) : void {
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-			setupStage();
+			stage.addEventListener(Event.RESIZE, resize);
+			stage.scaleMode = StageScaleMode.NO_SCALE;
+			stage.align = StageAlign.TOP;
+			resize();
+		}
+
+		/**
+		 * Resizes and sets up the elements
+		 */
+		private function resize(event : Event = null) : void {
+			removeChildren();
+			var stageBackground : Sprite = new Sprite();
+			stageBackground.graphics.beginFill(0xe0ffff);
+			stageBackground.graphics.drawRect(0, 0, applicationWidth, stage.stageHeight);
+			addChild(stageBackground);
 			startView = new StartView(applicationWidth, stage.stageHeight);
 			startView.addEventListener(StartView.PLAY_CLICKED, startGame, false, 0, true);
 			addChild(startView);
@@ -39,21 +54,10 @@ package blazin.miha.simplejump {
 		}
 
 		/**
-		 * Sets up stage and adds a background to the stage
-		 */
-		private function setupStage() : void {
-			stage.scaleMode = StageScaleMode.NO_SCALE;
-			stage.align = StageAlign.TOP;
-			var stageBackground : Sprite = new Sprite();
-			stageBackground.graphics.beginFill(0xe0ffff);
-			stageBackground.graphics.drawRect(0, 0, applicationWidth, stage.stageHeight);
-			addChild(stageBackground);
-		}
-
-		/**
 		 * Start game after player clicked the play button
 		 */
 		private function startGame(event : Event) : void {
+			stage.removeEventListener(Event.RESIZE, resize);
 			removeChild(startView);
 			addChild(gameView);
 			gameView.startGame();

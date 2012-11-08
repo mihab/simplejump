@@ -42,10 +42,6 @@ package blazin.miha.simplejump.game {
 		 */
 		private var xDown : int;
 		/**
-		 * Main timer used for player moving
-		 */
-		private var timer : Timer = new Timer(10);
-		/**
 		 * Last player move
 		 */
 		private var lastPlayerMove : PlayerMove;
@@ -59,7 +55,7 @@ package blazin.miha.simplejump.game {
 		 */
 		public function Player(playerSettings : PlayerSettings) {
 			this.playerSettings = playerSettings;
-			timer.addEventListener(TimerEvent.TIMER, loop, false, 0, true);
+			addEventListener(Event.ENTER_FRAME, onFrame, false, 0, true);
 			draw();
 			if (stage) init();
 			else addEventListener(Event.ADDED_TO_STAGE, init, false, 0, true);
@@ -81,16 +77,17 @@ package blazin.miha.simplejump.game {
 		public function jump() : void {
 			jumpStartTime = new Date().time;
 			jumpStartY = y;
-			timer.reset();
-			timer.start();
 			up = true;
+			if (!hasEventListener(Event.ENTER_FRAME)) {
+				addEventListener(Event.ENTER_FRAME, onFrame, false, 0, true);
+			}
 		}
 
 		/**
 		 * Stops the jump, leaving the player at the current Y coordinates
 		 */
 		public function stopJump() : void {
-			timer.stop();
+			removeEventListener(Event.ENTER_FRAME, onFrame);
 		}
 
 		public function getLastPlayerMove() : PlayerMove {
@@ -108,7 +105,7 @@ package blazin.miha.simplejump.game {
 		/**
 		 * Main loop which moves the player both on the X and Y coordinates
 		 */
-		private function loop(event : TimerEvent = null) : void {
+		private function onFrame(event : Event = null) : void {
 			var jumpComplete : Boolean = false;
 			var currentTime : int = new Date().time;
 			var time : int = currentTime - jumpStartTime;

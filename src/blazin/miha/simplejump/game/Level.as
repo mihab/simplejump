@@ -43,10 +43,6 @@ package blazin.miha.simplejump.game {
 		 */
 		private var cameraStartTime : int;
 		/**
-		 * Timer used for camera animation
-		 */
-		private var cameraTimer : Timer = new Timer(10);
-		/**
 		 * Whether player won or lost
 		 */
 		private var playerWon : Boolean = false;
@@ -66,7 +62,6 @@ package blazin.miha.simplejump.game {
 			this.levelSettings = levelSettings;
 			this.playerSettings = playerSettings;
 			this.platformSettings = platformSettings;
-			cameraTimer.addEventListener(TimerEvent.TIMER, moveCameraAnimation, false, 0, true);
 			draw();
 			generatePlatforms();
 			addPlayer();
@@ -235,8 +230,7 @@ package blazin.miha.simplejump.game {
 			cameraStartY = -y;
 			cameraEndY = player.y - platformSettings.platformHeight;
 			cameraStartTime = new Date().time;
-			cameraTimer.reset();
-			cameraTimer.start();
+			addEventListener(Event.ENTER_FRAME, moveCameraAnimation, false, 0, true);
 		}
 
 		/**
@@ -252,7 +246,7 @@ package blazin.miha.simplejump.game {
 				y = -newY;
 			} else {
 				y = -cameraEndY;
-				cameraTimer.reset();
+				removeEventListener(Event.ENTER_FRAME, moveCameraAnimation);
 			}
 		}
 

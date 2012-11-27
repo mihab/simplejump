@@ -2,9 +2,7 @@ package blazin.miha.simplejump.game {
 	import flash.events.Event;
 	import flash.display.Sprite;
 	import flash.events.KeyboardEvent;
-	import flash.events.TimerEvent;
 	import flash.ui.Keyboard;
-	import flash.utils.Timer;
 
 	/**
 	 * Main player class that moves around the screen. Dispatches events with type: PLAYER_MOVED, PLAYER_FALLING, JUMP_COMPLETE

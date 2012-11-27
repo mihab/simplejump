@@ -1,6 +1,4 @@
 package blazin.miha.simplejump.game {
-	import flash.events.TimerEvent;
-	import flash.utils.Timer;
 	import flash.events.Event;
 	import flash.display.Sprite;
 
